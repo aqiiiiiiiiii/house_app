@@ -50,6 +50,10 @@
 			<groupId>com.netflix.curator</groupId>
 			<artifactId>curator-framework</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.alibaba</groupId>
