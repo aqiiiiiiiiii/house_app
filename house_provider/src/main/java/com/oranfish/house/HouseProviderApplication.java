@@ -8,8 +8,5 @@ public class HouseProviderApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HouseProviderApplication.class, args);
-		while(true){
-
-		}
 	}
 }
