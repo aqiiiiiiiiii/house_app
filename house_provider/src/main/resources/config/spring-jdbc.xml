@@ -18,8 +18,6 @@
 
         <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="10000" />
-
-        <property name="validationQuery" value="SELECT 'x'" />
         <property name="testWhileIdle" value="true" />
 
         <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
@@ -27,9 +25,10 @@
         <property name="maxPoolPreparedStatementPerConnectionSize"
                   value="100" />
 
-        <!-- 密码加密 -->
+        <!-- 密码加密
         <property name="filters" value="config" />
         <property name="connectionProperties" value="config.decrypt=true" />
+        -->
     </bean>
 
     <bean id="dbgirlDataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -47,8 +46,6 @@
 
         <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="10000" />
-
-        <property name="validationQuery" value="SELECT 'x'" />
         <property name="testWhileIdle" value="true" />
 
         <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
@@ -56,22 +53,45 @@
         <property name="maxPoolPreparedStatementPerConnectionSize"
                   value="100" />
 
-        <!-- 密码加密 -->
+        <!-- 密码加密
         <property name="filters" value="config" />
-        <property name="connectionProperties" value="config.decrypt=true" />
+        <property name="connectionProperties" value="config.decrypt=true" />-->
     </bean>
 
 
     <!-- 动态数据源 -->
-    <bean id="dynamicDataSource" class="base.dataSource.DynamicDataSource">
+    <bean id="dynamicDataSource" class="com.oranfish.house.datasource.DynamicDataSource">
         <!-- 通过key-value关联数据源 -->
         <property name="targetDataSources">
             <map>
-                <entry value-ref="dataSourceRW" key="dataSourceRW"></entry>
-                <entry value-ref="dataSourceR" key="dataSourceR"></entry>
+                <entry key="houseDataSource" value-ref="houseDataSource" ></entry>
+                <entry key="dbgirlDataSource" value-ref="dbgirlDataSource" ></entry>
             </map>
         </property>
         <!-- 默认的DataSource配置-->
-        <property name="defaultTargetDataSource" ref="dataSourceR" />
+        <property name="defaultTargetDataSource" ref="houseDataSource" />
+    </bean>
+
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dynamicDataSource"/>
+        <!-- 配置MyBaties全局配置文件:mybatis-config.xml -->
+        <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+        <!-- 扫描entity包 使用别名 -->
+        <property name="typeAliasesPackage" value="com.oranfish.house.entity"/>
+        <!-- 扫描sql配置文件:mapper需要的xml文件 -->
+        <property name="mapperLocations" value="classpath:sqlmapper/*Mapper.xml"/>
+    </bean>
+    <!-- 4.配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="com.oranfish.house.dao"/>
+    </bean>
+    <!-- 上面的druid的配置 -->
+    <bean id="logFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+        <property name="statementExecutableSqlLogEnable" value="false" />
     </bean>
 </beans>

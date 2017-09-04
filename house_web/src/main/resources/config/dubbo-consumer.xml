@@ -10,4 +10,7 @@
     <dubbo:registry protocol="${dubbo.registry.protocol}" address="${dubbo.registry.address}" client="curator"/>
 
     <dubbo:reference id="helloServiceImpl" interface="com.oranfish.house.service.HelloService" />
+    <dubbo:reference id="houseServiceImpl" interface="com.oranfish.house.service.HouseService" />
+    <dubbo:reference id="dbgirlServiceImpl" interface="com.oranfish.house.service.DbgirlService" />
+
 </beans>

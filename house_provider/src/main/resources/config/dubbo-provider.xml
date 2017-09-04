@@ -14,5 +14,9 @@
 
     <dubbo:service interface="com.oranfish.house.service.HelloService"
                    ref="helloServiceImpl" retries="0" timeout="6000" />
+    <dubbo:service interface="com.oranfish.house.service.HouseService"
+                   ref="houseServiceImpl" retries="0" timeout="6000" />
+    <dubbo:service interface="com.oranfish.house.service.DbgirlService"
+                   ref="dbgirlServiceImpl" retries="0" timeout="6000" />
 
 </beans>
