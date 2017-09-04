@@ -7,3 +7,14 @@ dubbo:
   protocol:
     name: dubbo
     port: 20880
+datasource:
+  house:
+    driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/house?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&preferredTestQuery=select now()
+    username: root
+    password: root
+  dbgirl:
+      driver: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/dbgirl?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&preferredTestQuery=select now()
+      username: root
+      password: root

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="houseDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="driverClassName" value="${datasource.house.driver}"/>
+        <property name="url" value="${datasource.house.url}" />
+        <property name="username" value="${datasource.house.username}" />
+        <property name="password" value="${datasource.house.password}" />
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1" />
+        <property name="minIdle" value="1" />
+        <property name="maxActive" value="10" />
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="10000" />
+
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testWhileIdle" value="true" />
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="100" />
+
+        <!-- 密码加密 -->
+        <property name="filters" value="config" />
+        <property name="connectionProperties" value="config.decrypt=true" />
+    </bean>
+
+    <bean id="dbgirlDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="driverClassName" value="${datasource.dbgirl.driver}"/>
+        <property name="url" value="${datasource.dbgirl.url}" />
+        <property name="username" value="${datasource.dbgirl.username}" />
+        <property name="password" value="${datasource.dbgirl.password}" />
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1" />
+        <property name="minIdle" value="1" />
+        <property name="maxActive" value="10" />
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="10000" />
+
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testWhileIdle" value="true" />
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="100" />
+
+        <!-- 密码加密 -->
+        <property name="filters" value="config" />
+        <property name="connectionProperties" value="config.decrypt=true" />
+    </bean>
+
+
+    <!-- 动态数据源 -->
+    <bean id="dynamicDataSource" class="base.dataSource.DynamicDataSource">
+        <!-- 通过key-value关联数据源 -->
+        <property name="targetDataSources">
+            <map>
+                <entry value-ref="dataSourceRW" key="dataSourceRW"></entry>
+                <entry value-ref="dataSourceR" key="dataSourceR"></entry>
+            </map>
+        </property>
+        <!-- 默认的DataSource配置-->
+        <property name="defaultTargetDataSource" ref="dataSourceR" />
+    </bean>
+</beans>
