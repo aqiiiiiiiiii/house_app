@@ -14,7 +14,7 @@ public class HouseServiceImpl implements HouseService {
     private HouseMapper houseMapper;
 
     @Override
-    @Datasource("houseDataSource")
+    @Datasource(Datasource.HOUSE)
     public Integer count() {
         return houseMapper.count(DateUtils.getToday(), DateUtils.getTodayAddDay(1));
     }

@@ -64,8 +64,8 @@
         <!-- 通过key-value关联数据源 -->
         <property name="targetDataSources">
             <map>
-                <entry key="houseDataSource" value-ref="houseDataSource" ></entry>
-                <entry key="dbgirlDataSource" value-ref="dbgirlDataSource" ></entry>
+                <entry key="house" value-ref="houseDataSource" ></entry>
+                <entry key="dbgirl" value-ref="dbgirlDataSource" ></entry>
             </map>
         </property>
         <!-- 默认的DataSource配置-->

@@ -6,16 +6,32 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
 
 @Aspect
 @Order(-1) // 保证该AOP在@Transactional之前执行
 @Component
 public class DynamicDataSourceAspect {
+
+    @Pointcut("execution(* com.oranfish.house.service.*.*(..))")
+    private void dataSourcePointCut(){}
+
+    @Before("dataSourcePointCut()")
+    public void beforeService(JoinPoint point){
+        //获得当前访问的class
+        Class<?> className = point.getTarget().getClass();
+        Datasource annotation = className.getAnnotation(Datasource.class);
+        if(annotation != null && annotation.value() != null){
+            DataSourceContextHolder.setDB(annotation.value());
+        }
+    }
+
+    @After("dataSourcePointCut()")
+    public void afterService(){
+        DataSourceContextHolder.clearDB();
+    }
 
     @Before("@annotation(datasource)")
     public void beforeSwitch(JoinPoint point, Datasource datasource){
@@ -43,14 +59,6 @@ public class DynamicDataSourceAspect {
 //        // 切换数据源
 //        DataSourceContextHolder.setDB(dataSource);
         DataSourceContextHolder.setDB(datasource.value());
-    }
-
-
-    @After("@annotation(datasource)")
-    public void afterSwitch(JoinPoint point, Datasource datasource){
-
-        DataSourceContextHolder.clearDB();
-
     }
 
 }
